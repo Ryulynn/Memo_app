@@ -12,10 +12,10 @@ class CreateMemo
       puts "新規でメモを作成します。"
       puts "ファイル名を入力し、改行キーを押してください(拡張子は入力しないでください)。"
       @get_name_file = gets
-      @get_name_file.chomp!
+      @get_name_file.chomp!#getsは文末に改行「\n」が入るため消去。
       puts "ファイル中に記載する文字を入力してください。その後「Ctrl + d」を押してください。"
       @get_file_text = readlines
-      @get_file_text_chomp = @get_file_text.map{|i| 
+      @get_file_text_chomp = @get_file_text.map{|i| #.mapメソッドで改行が含まれる場合は削除
         if i.include?("\n")
           i.chomp!
         else
@@ -25,7 +25,7 @@ class CreateMemo
     end
     
     def create_file
-      CSV.open("#{@get_name_file}.csv","w") do |csv|
+      CSV.open("#{@get_name_file}.csv","w") do |csv|#csvファイルを作成
         csv << @get_file_text_chomp
       end
 　  end
@@ -54,17 +54,17 @@ class ChangeMemo
     end
     
     def change_content
-      CSV.open("#{@get_file_name}.csv","a") do |csv|
+      CSV.open("#{@get_file_name}.csv","a") do |csv|#csvファイルに追記（ファイルが存在しない場合は新規作成される。）
         csv << @get_add_content_chomp
       end
     end
 end
       
-
+#上記クラスをインスタンス化
 @new_file = CreateMemo.new
 @change_file = ChangeMemo.new
 
-
+#選択された内容ごとの処理
 if @get_type == 1 then
   puts "1が選択されました。"
   @new_file.name_file
